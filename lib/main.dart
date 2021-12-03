@@ -4,17 +4,22 @@ import 'package:redux/redux.dart';
 import 'package:workshop_redux_counter/redux/enum.dart';
 import 'package:workshop_redux_counter/redux/reducer.dart';
 
+import 'redux/app_state.dart';
+
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final store = Store<int>(counterReducer, initialState: 0);
+  final store = Store<AppState>(
+    counterReducer,
+    initialState: AppState(counter: 0),
+  );
   MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider<int>(
+    return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -39,8 +44,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<int, int>(
-      converter: (store) => store.state,
+    return StoreConnector<AppState, int>(
+      converter: (store) => store.state.counter,
       builder: (context, int count) {
         return Scaffold(
             appBar: AppBar(
@@ -74,14 +79,14 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 FloatingActionButton(
                   onPressed: () {
-                    StoreProvider.of<int>(context)
+                    StoreProvider.of<AppState>(context)
                         .dispatch(CounterActions.increament);
                   },
                   child: const Icon(Icons.add),
                 ),
                 FloatingActionButton(
                   onPressed: () {
-                    StoreProvider.of<int>(context)
+                    StoreProvider.of<AppState>(context)
                         .dispatch(CounterActions.decrement);
                   },
                   child: const Icon(Icons.remove),

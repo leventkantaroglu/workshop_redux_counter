@@ -1,10 +1,15 @@
+import 'app_state.dart';
 import 'enum.dart';
 
-int counterReducer(int state, dynamic action) {
+AppState counterReducer(AppState state, dynamic action) {
   if (action == CounterActions.increament) {
-    return state + 1;
+    var _state = state;
+    _state.counter += 1;
+    return _state;
   } else if (action == CounterActions.decrement) {
-    return state - 1;
+    var _state = state;
+    _state.counter -= 1;
+    return _state;
   }
   return state;
 }

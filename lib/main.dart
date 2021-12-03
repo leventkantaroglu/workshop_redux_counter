@@ -22,11 +22,11 @@ class MyApp extends StatelessWidget {
     return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Flutter',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: const MyHomePage(title: 'Flutter'),
       ),
     );
   }
@@ -48,24 +48,45 @@ class _MyHomePageState extends State<MyHomePage> {
       converter: (store) => store.state.counter,
       builder: (context, int count) {
         return Scaffold(
-            appBar: AppBar(
-              title: Text(widget.title),
+          appBar: AppBar(
+            title: Text(widget.title),
+          ),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'You have pushed the button this many times:',
+                ),
+                Text(
+                  count.toString(),
+                  style: Theme.of(context).textTheme.headline4,
+                )
+              ],
             ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text(
-                    'You have pushed the button this many times:',
-                  ),
-                  Text(
-                    count.toString(),
-                    style: Theme.of(context).textTheme.headline4,
-                  )
-                ],
+          ),
+          floatingActionButton: ButtonBar(
+            children: [
+              FloatingActionButton(
+                onPressed: () {
+                  StoreProvider.of<AppState>(context).dispatch(
+                    CounterActions.increament,
+                  );
+                },
+                child: const Icon(Icons.add),
               ),
-            ),
-            /*  floatingActionButton: StoreConnector<int, VoidCallback>(
+              FloatingActionButton(
+                onPressed: () {
+                  StoreProvider.of<AppState>(context).dispatch(
+                    CounterActions.decrement,
+                  );
+                },
+                child: const Icon(Icons.remove),
+              ),
+            ],
+          ),
+          /* ALTERNATIVE METHOD:
+            floatingActionButton: StoreConnector<int, VoidCallback>(
             converter: (store) {
               return () => store.dispatch(CounterActions.increament);
             },
@@ -75,24 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Icon(Icons.add),
             ),
           ), */
-            floatingActionButton: ButtonBar(
-              children: [
-                FloatingActionButton(
-                  onPressed: () {
-                    StoreProvider.of<AppState>(context)
-                        .dispatch(CounterActions.increament);
-                  },
-                  child: const Icon(Icons.add),
-                ),
-                FloatingActionButton(
-                  onPressed: () {
-                    StoreProvider.of<AppState>(context)
-                        .dispatch(CounterActions.decrement);
-                  },
-                  child: const Icon(Icons.remove),
-                ),
-              ],
-            ));
+        );
       },
     );
   }
